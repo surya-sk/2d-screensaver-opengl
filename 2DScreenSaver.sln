@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1259
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "2DScreenSaver", "2DScreenSaver\2DScreenSaver.vcxproj", "{08B7F962-80E5-4F37-9BC9-427BF6E32393}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{08B7F962-80E5-4F37-9BC9-427BF6E32393}.Debug|x64.ActiveCfg = Debug|x64
+		{08B7F962-80E5-4F37-9BC9-427BF6E32393}.Debug|x64.Build.0 = Debug|x64
+		{08B7F962-80E5-4F37-9BC9-427BF6E32393}.Debug|x86.ActiveCfg = Debug|Win32
+		{08B7F962-80E5-4F37-9BC9-427BF6E32393}.Debug|x86.Build.0 = Debug|Win32
+		{08B7F962-80E5-4F37-9BC9-427BF6E32393}.Release|x64.ActiveCfg = Release|x64
+		{08B7F962-80E5-4F37-9BC9-427BF6E32393}.Release|x64.Build.0 = Release|x64
+		{08B7F962-80E5-4F37-9BC9-427BF6E32393}.Release|x86.ActiveCfg = Release|Win32
+		{08B7F962-80E5-4F37-9BC9-427BF6E32393}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3F2C53C6-3540-460B-8FC8-D59E3F6EE6D3}
+	EndGlobalSection
+EndGlobal

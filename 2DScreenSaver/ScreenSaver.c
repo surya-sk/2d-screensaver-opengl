@@ -431,7 +431,7 @@ void main(int argc, char** argv)
 	// set window size
 	glutInitWindowSize(windowWidth, windowHeight);
 	// open the screen window
-	glutCreateWindow("Assignment 1");
+	glutCreateWindow("Screen Saver");
 	// register redraw function
 	glutDisplayFunc(display);
 	//idle function

@@ -164,7 +164,7 @@ void myIdle(void)
 	{
 		if (morphButtonClicked)
 		{
-			morphInterp += 0.00009;
+			morphInterp += 0.0009;
 		}
 		else
 		{
@@ -272,37 +272,37 @@ void display(void)
 
 	// draw the first polygon
 	glBegin(GL_POLYGON);
-	glColor3f(1.0, 0.0, 0.0);
-	glVertex2f((1 - morphInterp) * inversion * A1[0] + morphInterp * -0.15, (1 - morphInterp) * A1[1] + morphInterp * 0.3);
 	glColor3f(1.0, 1.0, 0.0);
-	glVertex2f((1 - morphInterp) * inversion *A2[0] + morphInterp * 0.0, (1 - morphInterp) * A2[1] + morphInterp * 0.2);
+	glVertex2f((1 - morphInterp) * inversion * A1[0] + morphInterp * -0.17, (1 - morphInterp) * A1[1] + morphInterp * 0.275);
+	glColor3f(1.0, 1.0, 0.0);
+	glVertex2f((1 - morphInterp) * inversion *A2[0] + morphInterp * -0.03, (1 - morphInterp) * A2[1] + morphInterp * 0.2);
 	glColor3f(1.0, 0.0, 1.0);
-	glVertex2f((1 - morphInterp) * inversion *A3[0] + morphInterp * -0.2, (1 - morphInterp) * A3[1] + morphInterp * -0.1);
-	glColor3f(0.0, 1.0, 1.0);
-	glVertex2f((1 - morphInterp) * inversion * A4[0] + morphInterp * -0.3, (1 - morphInterp) * A4[1] + morphInterp * 0.0);
+	glVertex2f((1 - morphInterp) * inversion *A3[0] + morphInterp * -0.2, (1 - morphInterp) * A3[1] + morphInterp * -0.03);
+	glColor3f(1.0, 0.0, 1.0);
+	glVertex2f((1 - morphInterp) * inversion * A4[0] + morphInterp * -0.3, (1 - morphInterp) * A4[1] + morphInterp * 0.05);
 	glEnd();
 
 	//draw the second polygon
 	glBegin(GL_POLYGON);
-	glColor3f(1.0, 1.0, 0.0);
+	glColor3f(0.0, 1.0, 1.0);
 	glVertex2f((1 - morphInterp) * inversion * B1[0] + morphInterp * 0.1, (1 - morphInterp) * B1[1] + morphInterp * 0.5);
-	glColor3f(1.0, 0.0, 1.0);
+	glColor3f(0.0, 1.0, 1.0);
 	glVertex2f((1 - morphInterp) * inversion * B2[0] + morphInterp * 0.2, (1 - morphInterp) * B2[1] + morphInterp * 0.4);
-	glColor3f(1.0, 0.0, 1.0);
-	glVertex2f((1 - morphInterp) * inversion * B3[0] + morphInterp * -0.1, (1 - morphInterp) * B3[1] + morphInterp * 0.2);
+	glColor3f(1.0, 1.0, 0.0);
+	glVertex2f((1 - morphInterp) * inversion * B3[0] + morphInterp * -0.1, (1 - morphInterp) * B3[1] + morphInterp * 0.23);
 	glColor3f(1.0, 1.0, 0.0);
 	glVertex2f((1 - morphInterp) * inversion * B4[0] + morphInterp * -0.2, (1 - morphInterp) * B4[1] + morphInterp * 0.3);
 	glEnd();
 
 	//draw the last polygon
 	glBegin(GL_POLYGON);
-	glColor3f(0.0, 1.0, 0.0);
-	glVertex2f((1 - morphInterp) * inversion * C1[0] + morphInterp * -0.2, (1 - morphInterp) * C1[1] + morphInterp * 0.0);
+	glColor3f(1.0, 0.0, 1.0);
+	glVertex2f((1 - morphInterp) * inversion * C1[0] + morphInterp * -0.2, (1 - morphInterp) * C1[1] + morphInterp * 0.05);
 	glColor3f(1.0, 0.0, 1.0);
 	glVertex2f((1 - morphInterp) * inversion * C2[0] + morphInterp * -0.1, (1 - morphInterp) * C2[1] + morphInterp * -0.1);
-	glColor3f(1.0, 0.0, 1.0);
-	glVertex2f((1 - morphInterp) * inversion * C3[0] + morphInterp * -0.4, (1 - morphInterp) * C3[1] + morphInterp * -0.3);
 	glColor3f(1.0, 1.0, 0.0);
+	glVertex2f((1 - morphInterp) * inversion * C3[0] + morphInterp * -0.4, (1 - morphInterp) * C3[1] + morphInterp * -0.3);
+	glColor3f(1.0, 0.0, 1.0);
 	glVertex2f((1 - morphInterp) * inversion * C4[0] + morphInterp * -0.3, (1 - morphInterp) * C4[1] + morphInterp * -0.2);
 	glEnd();
 

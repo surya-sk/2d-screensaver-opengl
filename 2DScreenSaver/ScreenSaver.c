@@ -12,6 +12,8 @@ Author:			Surya Kashyap
 
 /* include the library header files */
 #include <freeglut.h>
+#include <time.h>
+#include <stdio.h>
 
 //variables for window size
 GLint windowHeight = 500;
@@ -50,7 +52,7 @@ GLfloat Q3[2] = { -0.9, 0.95 };
 GLfloat Q4[2] = { -0.8, 0.95 };
 
 
-//
+//position to interpolate to
 GLfloat Y1[2] = { -1.0, 0.95 };
 GLfloat Y2[2] = { -0.9, 0.95 };
 GLfloat Y3[2] = { -0.9, 0.95 };
@@ -62,7 +64,7 @@ GLfloat R2[2] = { -0.9, 0.95 };
 GLfloat R3[2] = { -0.9,0.95 };
 GLfloat R4[2] = { -0.8, 0.9 };
 
-//third line of sparkle
+//position to interpolate to
 GLfloat V1[2] = { -1.0, 1.0 };
 GLfloat V2[2] = { -0.9, 0.95 };
 GLfloat V3[2] = { -0.9,0.95 };
@@ -74,19 +76,30 @@ GLfloat S2[2] = { -0.9, 0.95 };
 GLfloat S3[2] = { -0.9, 0.95 };
 GLfloat S4[2] = { -1.0, 0.9 };
 
-//third line of sparkle
+//position to interpolate to
 GLfloat W1[2] = { -0.8, 1.0 };
 GLfloat W2[2] = { -0.9, 0.95 };
 GLfloat W3[2] = { -0.9, 0.95 };
 GLfloat W4[2] = { -1.0, 0.9 };
 
 
-//interpolation
+//interpolation for the sparkle
 GLfloat sparkleInterp = 0.0;
-
+ 
+//interpolation for the morphing
 GLfloat morphInterp = 0.0;
 
+//interpolation for the sparls
+GLfloat sparksInterp = 0.0;
+
+GLfloat arr[] = { 0.1,-0.1,0.2,-0.2,0.3,-0.3,0.5,-0.5,0.6,-0.6,0.7,-0.7 };
 GLint count = 0;
+GLfloat RP[4];
+
+GLint invertColors = 0;
+
+
+
 
 
 
@@ -119,9 +132,18 @@ void initializeGL(void)
 	//enable smooth line-drawing 
 	glEnable(GL_LINE_SMOOTH);
 
+	int i = 0;
+	for (i = 0; i < 4; i++)
+	{
+		RP[i] = arr[getRandomNumber()];
+	}
 
-
-
+}
+int getRandomNumber()
+{
+	srand(time(0));
+	int num = (rand() % (10 - 0 + 1) + 0);
+	return num;
 }
 
 void myIdle(void)
@@ -150,6 +172,11 @@ void myIdle(void)
 		}
 	}
 
+	sparksInterp += 0.0005;
+	if (sparksInterp >= 1.0)
+	{
+		sparksInterp = 1.0;
+	}
 
 	if (morphInterp >= 1.0)
 	{
@@ -232,94 +259,130 @@ void display(void)
 {
 	// clear the screen 
 	glClear(GL_COLOR_BUFFER_BIT);
+
+	GLint inversion;
+	if (invertColors)
+	{
+		inversion = -1;
+	}
+	else
+	{
+		inversion = 1;
+	}
+
 	// draw the first polygon
 	glBegin(GL_POLYGON);
 	glColor3f(1.0, 0.0, 0.0);
-	glVertex2f((1 - morphInterp) * A1[0] + morphInterp * -0.15, (1 - morphInterp) * A1[1] + morphInterp * 0.3);
+	glVertex2f((1 - morphInterp) * inversion * A1[0] + morphInterp * -0.15, (1 - morphInterp) * A1[1] + morphInterp * 0.3);
 	glColor3f(1.0, 1.0, 0.0);
-	glVertex2f((1 - morphInterp) * A2[0] + morphInterp * 0.0, (1 - morphInterp) * A2[1] + morphInterp * 0.2);
+	glVertex2f((1 - morphInterp) * inversion *A2[0] + morphInterp * 0.0, (1 - morphInterp) * A2[1] + morphInterp * 0.2);
 	glColor3f(1.0, 0.0, 1.0);
-	glVertex2f((1 - morphInterp) * A3[0] + morphInterp * -0.2, (1 - morphInterp) * A3[1] + morphInterp * -0.1);
+	glVertex2f((1 - morphInterp) * inversion *A3[0] + morphInterp * -0.2, (1 - morphInterp) * A3[1] + morphInterp * -0.1);
 	glColor3f(0.0, 1.0, 1.0);
-	glVertex2f((1 - morphInterp) * A4[0] + morphInterp * -0.3, (1 - morphInterp) * A4[1] + morphInterp * 0.0);
+	glVertex2f((1 - morphInterp) * inversion * A4[0] + morphInterp * -0.3, (1 - morphInterp) * A4[1] + morphInterp * 0.0);
 	glEnd();
 
 	//draw the second polygon
 	glBegin(GL_POLYGON);
-	glVertex2f((1 - morphInterp) * B1[0] + morphInterp * 0.1, (1 - morphInterp) * B1[1] + morphInterp * 0.5);
-	glVertex2f((1 - morphInterp) * B2[0] + morphInterp * 0.2, (1 - morphInterp) * B2[1] + morphInterp * 0.4);
-	glColor3f(1.0, 0.0, 1.0);
-	glVertex2f((1 - morphInterp) * B3[0] + morphInterp * -0.1, (1 - morphInterp) * B3[1] + morphInterp * 0.2);
 	glColor3f(1.0, 1.0, 0.0);
-	glVertex2f((1 - morphInterp) * B4[0] + morphInterp * -0.2, (1 - morphInterp) * B4[1] + morphInterp * 0.3);
+	glVertex2f((1 - morphInterp) * inversion * B1[0] + morphInterp * 0.1, (1 - morphInterp) * B1[1] + morphInterp * 0.5);
+	glColor3f(1.0, 0.0, 1.0);
+	glVertex2f((1 - morphInterp) * inversion * B2[0] + morphInterp * 0.2, (1 - morphInterp) * B2[1] + morphInterp * 0.4);
+	glColor3f(1.0, 0.0, 1.0);
+	glVertex2f((1 - morphInterp) * inversion * B3[0] + morphInterp * -0.1, (1 - morphInterp) * B3[1] + morphInterp * 0.2);
+	glColor3f(1.0, 1.0, 0.0);
+	glVertex2f((1 - morphInterp) * inversion * B4[0] + morphInterp * -0.2, (1 - morphInterp) * B4[1] + morphInterp * 0.3);
 	glEnd();
 
 	//draw the last polygon
 	glBegin(GL_POLYGON);
-	glVertex2f((1 - morphInterp) * C1[0] + morphInterp * -0.2, (1 - morphInterp) * C1[1] + morphInterp * 0.0);
-	glVertex2f((1 - morphInterp) * C2[0] + morphInterp * -0.1, (1 - morphInterp) * C2[1] + morphInterp * -0.1);
-	glVertex2f((1 - morphInterp) * C3[0] + morphInterp * -0.4, (1 - morphInterp) * C3[1] + morphInterp * -0.3);
-	glVertex2f((1 - morphInterp) * C4[0] + morphInterp * -0.3, (1 - morphInterp) * C4[1] + morphInterp * -0.2);
+	glColor3f(0.0, 1.0, 0.0);
+	glVertex2f((1 - morphInterp) * inversion * C1[0] + morphInterp * -0.2, (1 - morphInterp) * C1[1] + morphInterp * 0.0);
+	glColor3f(1.0, 0.0, 1.0);
+	glVertex2f((1 - morphInterp) * inversion * C2[0] + morphInterp * -0.1, (1 - morphInterp) * C2[1] + morphInterp * -0.1);
+	glColor3f(1.0, 0.0, 1.0);
+	glVertex2f((1 - morphInterp) * inversion * C3[0] + morphInterp * -0.4, (1 - morphInterp) * C3[1] + morphInterp * -0.3);
+	glColor3f(1.0, 1.0, 0.0);
+	glVertex2f((1 - morphInterp) * inversion * C4[0] + morphInterp * -0.3, (1 - morphInterp) * C4[1] + morphInterp * -0.2);
 	glEnd();
 
-	
+	//enable blending for transparency
+	glEnable(GL_BLEND);
+
+	//set the blending mode
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	//if sparke button is clicked
 	if (sparkleButtonClicked)
 	{
-		//enable blending for transparency
-		glEnable(GL_BLEND);
-
-		//set the blending mode
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		GLfloat sparkleColor;
+		if (invertColors)
+		{
+			sparkleColor = 0.0;
+		}
+		else
+		{
+			sparkleColor = 1.0;
+		}
 
 		//draw the sparkle
 		glBegin(GL_LINES);
 
 		//first line
-		glColor4f(1.0, 1.0, 1.0, 0.0);
+		glColor4f(sparkleColor,sparkleColor,sparkleColor, 0.0);
 		glVertex2f((1 - sparkleInterp) * P1[0] + sparkleInterp * X1[0], (1 - sparkleInterp) * P1[1] + sparkleInterp * X1[1]);
-		glColor4f(1.0, 1.0, 1.0, 1.0);
+		glColor4f(sparkleColor, sparkleColor, sparkleColor, 1.0);
 		glVertex2f((1 - sparkleInterp) * P2[0] + sparkleInterp * X2[0], (1 - sparkleInterp) * P2[1] + sparkleInterp * X2[1]);
-		glColor4f(1.0, 1.0, 1.0, 1.0);
+		glColor4f(sparkleColor, sparkleColor, sparkleColor, 1.0);
 		glVertex2f((1 - sparkleInterp) * P3[0] + sparkleInterp * X3[0], (1 - sparkleInterp) * P3[1] + sparkleInterp * X3[1]);
-		glColor4f(1.0, 1.0, 1.0, 0.0);
+		glColor4f(sparkleColor, sparkleColor, sparkleColor, 0.0);
 		glVertex2f((1 - sparkleInterp) * P4[0] + sparkleInterp * X4[0], (1 - sparkleInterp) * P4[1] + sparkleInterp * X4[1]);
 
 		//second line
-		glColor4f(1.0, 1.0, 1.0, 0.0);
+		glColor4f(sparkleColor, sparkleColor, sparkleColor, 0.0);
 		glVertex2f((1 - sparkleInterp) * Q1[0] + sparkleInterp * Y1[0], (1 - sparkleInterp) * Q1[1] + sparkleInterp * Y1[1]);
-		glColor4f(1.0, 1.0, 1.0, 1.0);
+		glColor4f(sparkleColor, sparkleColor, sparkleColor, 1.0);
 		glVertex2f((1 - sparkleInterp) * Q2[0] + sparkleInterp * Y2[0], (1 - sparkleInterp) * Q2[1] + sparkleInterp * Y2[1]);
-		glColor4f(1.0, 1.0, 1.0, 1.0);
+		glColor4f(sparkleColor, sparkleColor, sparkleColor, 1.0);
 		glVertex2f((1 - sparkleInterp) * Q3[0] + sparkleInterp * Y3[0], (1 - sparkleInterp) * Q3[1] + sparkleInterp * Y3[1]);
-		glColor4f(1.0, 1.0, 1.0, 0.0);
+		glColor4f(sparkleColor, sparkleColor, sparkleColor, 0.0);
 		glVertex2f((1 - sparkleInterp) * Q4[0] + sparkleInterp * Y4[0], (1 - sparkleInterp) * Q4[1] + sparkleInterp * Y4[1]);
 
 		//third line
-		glColor4f(1.0, 1.0, 1.0, 0.0);
+		glColor4f(sparkleColor, sparkleColor, sparkleColor, 0.0);
 		glVertex2f((1 - sparkleInterp) * R1[0] + sparkleInterp * V1[0], (1 - sparkleInterp) * R1[1] + sparkleInterp * V1[1]);
-		glColor4f(1.0, 1.0, 1.0, 1.0);
+		glColor4f(sparkleColor, sparkleColor, sparkleColor, 1.0);
 		glVertex2f((1 - sparkleInterp) * R2[0] + sparkleInterp * V2[0], (1 - sparkleInterp) * R2[1] + sparkleInterp * V2[1]);
-		glColor4f(1.0, 1.0, 1.0, 1.0);
+		glColor4f(sparkleColor, sparkleColor, sparkleColor, 1.0);
 		glVertex2f((1 - sparkleInterp) * R3[0] + sparkleInterp * V3[0], (1 - sparkleInterp) * R3[1] + sparkleInterp * V3[1]);
-		glColor4f(1.0, 1.0, 1.0, 0.0);
+		glColor4f(sparkleColor, sparkleColor, sparkleColor, 0.0);
 		glVertex2f((1 - sparkleInterp) * R4[0] + sparkleInterp * V4[0], (1 - sparkleInterp) * R4[1] + sparkleInterp * V4[1]);
 
 		//fourth line
-		glColor4f(1.0, 1.0, 1.0, 0.0);
+		glColor4f(sparkleColor, sparkleColor, sparkleColor, 0.0);
 		glVertex2f((1 - sparkleInterp) * S1[0] + sparkleInterp * W1[0], (1 - sparkleInterp) * S1[1] + sparkleInterp * W1[1]);
-		glColor4f(1.0, 1.0, 1.0, 1.0);
+		glColor4f(sparkleColor, sparkleColor, sparkleColor, 1.0);
 		glVertex2f((1 - sparkleInterp) * S2[0] + sparkleInterp * W2[0], (1 - sparkleInterp) * S2[1] + sparkleInterp * W2[1]);
-		glColor4f(1.0, 1.0, 1.0, 1.0);
+		glColor4f(sparkleColor, sparkleColor, sparkleColor, 1.0);
 		glVertex2f((1 - sparkleInterp) * S3[0] + sparkleInterp * W3[0], (1 - sparkleInterp) * S3[1] + sparkleInterp * W3[1]);
-		glColor4f(1.0, 1.0, 1.0, 0.0);
+		glColor4f(sparkleColor, sparkleColor, sparkleColor, 0.0);
 		glVertex2f((1 - sparkleInterp) * S4[0] + sparkleInterp * W4[0], (1 - sparkleInterp) * S4[1] + sparkleInterp * W4[1]);
 
 		glEnd();
 
 	}
 	
+
+	glBegin(GL_LINES);
+	glVertex2f(P2[0], P2[1]);
+	glVertex2f((1 - sparksInterp) * P2[0] + sparksInterp * RP[1], (1 - sparksInterp) * P2[1] + sparksInterp * RP[2]);
+	glVertex2f(P2[0], P2[1]);
+	glVertex2f((1 - sparksInterp) * P2[0] + sparksInterp * RP[3], (1 - sparksInterp) * P2[1] + sparksInterp * RP[4]);
+	glVertex2f(P2[0], P2[1]);
+	glVertex2f((1 - sparksInterp) * P2[0] + sparksInterp * RP[5], (1 - sparksInterp) * P2[1] + sparksInterp * RP[6]);
+	glVertex2f(P2[0], P2[1]);
+	glVertex2f((1 - sparksInterp) * P2[0] + sparksInterp * RP[8], (1 - sparksInterp) * P2[1] + sparksInterp * RP[7]);
+	glEnd();
 
 	//draw the bottom bar
 	glBegin(GL_POLYGON);
@@ -411,15 +474,8 @@ void display(void)
 		tXPos += 0.03;
 	}
 
-	if (mouseClicked)
-	{
-		glBegin(GL_POINTS);
 
-		// draw the vertex at that point
-		glVertex2f(mouseX, mouseY);
 
-		glEnd();
-	}
 	// switch to the other buffer
 	glutSwapBuffers();
 }
@@ -469,10 +525,25 @@ void myMouse(int button, int state, int x, int y)
 				morphButtonClicked = 1;
 			}
 		}
+		if (mouseX > -1.0 && mouseX < 1.0 && mouseY > -0.8 && mouseX < 1.0)
+		{
+			if (invertColors)
+			{
+				glClearColor(0.0, 0.0, 0.0, 0);
+				invertColors = 0;
+			}
+			else
+			{
+				glClearColor(1.0, 1.0, 1.0, 0);
+				invertColors = 1;
+			}
+			
+		}
 		glutPostRedisplay();
 
 	}
 }
+
 
 /************************************************************************
 

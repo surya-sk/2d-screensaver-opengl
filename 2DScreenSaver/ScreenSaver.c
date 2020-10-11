@@ -92,14 +92,20 @@ GLfloat morphInterp = 0.0;
 //interpolation for the sparls
 GLfloat sparksInterp = 0.0;
 
+//array for storing values for sparks to fly towards
 GLfloat arr[] = { 0.1,-0.1,0.2,-0.2,0.3,-0.3,0.5,-0.5,0.6,-0.6,0.7,-0.7, 0.8, 0.9 };
+
+//counter for keeping track of next position of sparkle
 GLint count = 0;
+
 GLfloat RP[6];
 
+//starting position of the sparkle
 GLfloat startPosX, startPosY;
+
+//check if colors should be inverted
 GLint invertColors = 0;
 
-GLint interval = 10;
 
 
 
@@ -134,6 +140,14 @@ void initializeGL(void)
 	glEnable(GL_LINE_SMOOTH);
 
 }
+
+/************************************************************************
+
+Function:		getRandomNumber
+
+Description:	Generates a random number from 0 to 10
+
+*************************************************************************/
 int getRandomNumber()
 {
 	srand(time(0));
@@ -141,6 +155,14 @@ int getRandomNumber()
 	return num;
 }
 
+
+/************************************************************************
+
+Function:		myIdle
+
+Description:	Handlees events when screen is idle
+
+*************************************************************************/
 void myIdle(void)
 {
 	if (mouseClicked)
@@ -243,7 +265,7 @@ void myIdle(void)
 
 			count = 0;
 		}
-
+		//reset interpolation
 		sparkleInterp = 0.0;
 	}
 
@@ -256,7 +278,7 @@ void myIdle(void)
 
 Function:		display
 
-Description:	Draws a K.
+Description:	Draws a K, sparkle, sparks, bottom bar and buttons
 
 *************************************************************************/
 void display(void)

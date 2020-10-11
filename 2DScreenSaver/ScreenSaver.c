@@ -372,7 +372,6 @@ void display(void)
 		glColor4f(sparkleColor, sparkleColor, sparkleColor, 0.0);
 		glVertex2f((1 - sparkleInterp) * S4[0] + sparkleInterp * W4[0], (1 - sparkleInterp) * S4[1] + sparkleInterp * W4[1]);
 
-
 		//draw sparks whenever the sparks button is clicked
 		if (sparksButtonClicked)
 		{
@@ -523,6 +522,7 @@ void myMouse(int button, int state, int x, int y)
 			if (sparkleButtonClicked)
 			{
 				sparkleButtonClicked = 0;
+				sparksButtonClicked = 0;
 			}
 			else
 			{

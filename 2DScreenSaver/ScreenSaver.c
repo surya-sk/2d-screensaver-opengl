@@ -92,13 +92,14 @@ GLfloat morphInterp = 0.0;
 //interpolation for the sparls
 GLfloat sparksInterp = 0.0;
 
-GLfloat arr[] = { 0.1,-0.1,0.2,-0.2,0.3,-0.3,0.5,-0.5,0.6,-0.6,0.7,-0.7 };
+GLfloat arr[] = { 0.1,-0.1,0.2,-0.2,0.3,-0.3,0.5,-0.5,0.6,-0.6,0.7,-0.7, 0.8, 0.9 };
 GLint count = 0;
-GLfloat RP[4];
+GLfloat RP[6];
 
+GLfloat startPosX, startPosY;
 GLint invertColors = 0;
 
-
+GLint interval = 10;
 
 
 
@@ -132,12 +133,6 @@ void initializeGL(void)
 	//enable smooth line-drawing 
 	glEnable(GL_LINE_SMOOTH);
 
-	int i = 0;
-	for (i = 0; i < 4; i++)
-	{
-		RP[i] = arr[getRandomNumber()];
-	}
-
 }
 int getRandomNumber()
 {
@@ -152,7 +147,16 @@ void myIdle(void)
 	{
 		if (sparkleButtonClicked)
 		{
-			sparkleInterp += 0.0005;
+			sparkleInterp += 0.0004;
+			if (sparksButtonClicked)
+			{
+				sparksInterp += 0.0005;
+			}
+			else
+			{
+				sparksInterp = 0.0;
+			}
+			
 		}
 		else
 		{
@@ -172,7 +176,7 @@ void myIdle(void)
 		}
 	}
 
-	sparksInterp += 0.0005;
+
 	if (sparksInterp >= 1.0)
 	{
 		sparksInterp = 1.0;
@@ -368,21 +372,30 @@ void display(void)
 		glColor4f(sparkleColor, sparkleColor, sparkleColor, 0.0);
 		glVertex2f((1 - sparkleInterp) * S4[0] + sparkleInterp * W4[0], (1 - sparkleInterp) * S4[1] + sparkleInterp * W4[1]);
 
-		glEnd();
 
+		//draw sparks whenever the sparks button is clicked
+		if (sparksButtonClicked)
+		{
+			glColor4f(RP[1], RP[2], sparkleColor, 0.0);
+			glVertex2f(startPosX, startPosY);
+			glColor4f(sparkleColor, sparkleColor, sparkleColor, 1.0);
+			glVertex2f((1 - sparksInterp) * startPosX + sparksInterp * RP[1], (1 - sparksInterp) * startPosY + sparksInterp * RP[2]);
+			glColor4f(RP[3], RP[4], sparkleColor, 0.0);
+			glVertex2f(startPosX, startPosY);
+			glColor4f(sparkleColor, sparkleColor, sparkleColor, 1.0);
+			glVertex2f((1 - sparksInterp) * startPosX + sparksInterp * RP[3], (1 - sparksInterp) * startPosY + sparksInterp * RP[4]);
+			glColor4f(RP[5], RP[6], sparkleColor, 0.0);
+			glVertex2f(startPosX, startPosY);
+			glColor4f(sparkleColor, sparkleColor, sparkleColor, 1.0);
+			glVertex2f((1 - sparksInterp) * startPosX + sparksInterp * RP[5], (1 - sparksInterp) * startPosY + sparksInterp * RP[6]);
+
+		}
+
+		glEnd();
 	}
 	
 
-	glBegin(GL_LINES);
-	glVertex2f(P2[0], P2[1]);
-	glVertex2f((1 - sparksInterp) * P2[0] + sparksInterp * RP[1], (1 - sparksInterp) * P2[1] + sparksInterp * RP[2]);
-	glVertex2f(P2[0], P2[1]);
-	glVertex2f((1 - sparksInterp) * P2[0] + sparksInterp * RP[3], (1 - sparksInterp) * P2[1] + sparksInterp * RP[4]);
-	glVertex2f(P2[0], P2[1]);
-	glVertex2f((1 - sparksInterp) * P2[0] + sparksInterp * RP[5], (1 - sparksInterp) * P2[1] + sparksInterp * RP[6]);
-	glVertex2f(P2[0], P2[1]);
-	glVertex2f((1 - sparksInterp) * P2[0] + sparksInterp * RP[8], (1 - sparksInterp) * P2[1] + sparksInterp * RP[7]);
-	glEnd();
+
 
 	//draw the bottom bar
 	glBegin(GL_POLYGON);
@@ -397,7 +410,7 @@ void display(void)
 	glBegin(GL_POLYGON);
 	if (sparksButtonClicked)
 	{
-		glColor3f(1.0, 0.05, 0.0);
+		glColor3f(1.0, 0.5, 0.0);
 	}
 	else
 	{
@@ -481,6 +494,8 @@ void display(void)
 }
 
 
+
+
 /************************************************************************
 
 Function:		myMouse
@@ -502,6 +517,7 @@ void myMouse(int button, int state, int x, int y)
 		mouseY = mouseY / (GLfloat)windowHeight;
 		mouseY = mouseY * 2.0f - 1.0f;
 
+		//if first button is clicked
 		if (mouseX >= -0.2 && mouseX <= 0.2 && mouseY <= -0.85 && mouseY >= -0.95)
 		{
 			if (sparkleButtonClicked)
@@ -514,6 +530,7 @@ void myMouse(int button, int state, int x, int y)
 			}
 		}
 
+		//if second button is clicked
 		if (mouseX >= 0.6 && mouseX <= 0.9 && mouseY <= -0.85 && mouseY >= -0.95)
 		{
 			if (morphButtonClicked)
@@ -525,6 +542,27 @@ void myMouse(int button, int state, int x, int y)
 				morphButtonClicked = 1;
 			}
 		}
+
+		//if third button is clicked
+		if (mouseX >= -0.9 && mouseX <= -0.6 && mouseY <= -0.85 && mouseY >= -0.95)
+		{
+			if (sparksButtonClicked)
+			{
+				sparksButtonClicked = 0;
+			}
+			else
+			{
+				sparksButtonClicked = 1;
+				startPosX = (1 - sparkleInterp) * P2[0] + sparkleInterp * X2[0];
+				startPosY = (1 - sparkleInterp) * P2[1] + sparkleInterp * X2[1];
+				for (int i = 0; i < 4; i++)
+				{
+					RP[i] = arr[getRandomNumber()];
+				}
+			}
+		}
+
+		//if the mouse is clicked anywhere on the screen other than the bottom bar
 		if (mouseX > -1.0 && mouseX < 1.0 && mouseY > -0.8 && mouseX < 1.0)
 		{
 			if (invertColors)
